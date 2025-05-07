@@ -11,6 +11,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
+    "@nuxt/image": "^1.10.0",
     "@radix-ui/colors": "^3.0.0",
     "nuxt": "^3.16.2",
     "reka-ui": "^2.2.1",
