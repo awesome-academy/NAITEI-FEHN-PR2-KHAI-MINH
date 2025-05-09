@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <AppHeader ref="pageHeaderRef" />
-    <main><slot :headerHeight="actualHeaderHeight" /></main>
-  </div>
-</template>
+    <div>
+      <AppHeader ref="pageHeaderRef" />
+      <slot :headerHeight="actualHeaderHeight" />
+      <AppFooter />
+    </div>
+  </template>
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import AppHeader from "@/components/app/header.vue";
