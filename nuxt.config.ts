@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/tailwindcss", "reka-ui/nuxt", "@nuxt/image"],
   tailwindcss: {
     config: {
+      darkMode: 'class',
       content: [
         "./app.vue",
         "./components/**/*.{vue,js,ts,jsx,tsx}",
