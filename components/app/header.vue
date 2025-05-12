@@ -104,12 +104,13 @@
                         <div
                           class="mt-4 mb-[7px] text-[18px] font-medium leading-[1.2] text-slate-900 dark:text-white"
                         >
-                         Rổ phim
+                          Rổ phim
                         </div>
                         <p
                           class="text-slate-500 dark:text-slate-400 text-[14px] leading-[1.3]"
                         >
-                          Rổ phim là một trang web cung cấp thông tin về lịch chiếu phim, rạp chiếu.
+                          Rổ phim là một trang web cung cấp thông tin về lịch
+                          chiếu phim, rạp chiếu.
                         </p>
                       </a>
                     </NavigationMenuLink>

@@ -12,7 +12,7 @@ useHead({
   },
   htmlAttrs: {
     lang: "vi",
-    class: "dark" // Add this line
+    class: "dark", // Add this line
   },
 });
 </script>
