@@ -230,12 +230,9 @@ import {
 
 const route = useRoute();
 const isScrolled = ref(false);
-const appHeader = ref<HTMLElement | null>(null); // Ref for the header element itself
-
-// isHeroTransparent: Xác định xem header có nên trong suốt ban đầu không
-// (ví dụ: chỉ ở trang chủ và khi hero section có ảnh nền lớn)
+const appHeader = ref<HTMLElement | null>(null);
 const isHeroTransparent = computed(() => {
-  return route.path === "/"; // Chỉ trong suốt ở trang chủ
+  return route.path === "/";
 });
 
 const handleScroll = () => {
@@ -251,7 +248,6 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-// Expose the header element ref if needed by parent for height calculation
 defineExpose({ element: appHeader });
 
 interface NavItem {
@@ -263,11 +259,6 @@ const navigationItems = ref<NavItem[]>([
   {
     name: "Lịch chiếu",
     href: "/lich-chieu",
-    children: [
-      { name: "Lịch phim chiếu hôm nay", href: "/lich-chieu/sub1" },
-      { name: "Phim đang chiếu", href: "/lich-chieu/sub2" },
-      { name: "Phim sắp chiếu", href: "/lich-chieu/sub3" },
-    ],
   },
   {
     name: "Rạp chiếu",

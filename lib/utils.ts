@@ -26,3 +26,15 @@ export function getWeekday(dateString: string): string {
   const date = new Date(dateString);
   return weekdays[date.getDay()];
 }
+
+export function formatDuration(minutes: number | undefined): string {
+  if (minutes === undefined || minutes === null || minutes <= 0) {
+    return "N/A";
+  }
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h > 0) {
+    return `${h}h ${m > 0 ? `${m}m` : ""}`.trim();
+  }
+  return `${m}m`;
+}
