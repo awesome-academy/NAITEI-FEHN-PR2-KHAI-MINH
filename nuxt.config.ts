@@ -1,11 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { mauve, green, grass } from "@radix-ui/colors";
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01", // Đảm bảo bạn đã cập nhật ngày này nếu cần
   modules: ["@nuxtjs/tailwindcss", "reka-ui/nuxt", "@nuxt/image"],
   tailwindcss: {
     config: {
-      darkMode: 'class',
       content: [
         "./app.vue",
         "./components/**/*.{vue,js,ts,jsx,tsx}",
