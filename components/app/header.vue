@@ -86,7 +86,7 @@
                 class="absolute top-0 left-0 w-auto data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight"
               >
                 <ul
-                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px] bg-white dark:bg-slate-800 shadow-lg rounded-md border border-gray-200 dark:border-slate-700"
+                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px]  rounded-md border border-gray-200 border-slate-700"
                 >
                   <li class="row-span-4 grid">
                     <NavigationMenuLink as-child>
