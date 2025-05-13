@@ -5,20 +5,20 @@
       :slides-per-view="3"
       :space-between="16"
       :navigation="{
-        nextEl: '.swiper-button-next-custom',
-        prevEl: '.swiper-button-prev-custom',
+        nextEl: '.swiper-button-next-custom2',
+        prevEl: '.swiper-button-prev-custom2',
       }"
       :breakpoints="{
-        // when window width is >= 640px (sm)
         640: {
           slidesPerView: 3,
         },
-        // when window width is >= 768px (md)
         768: {
-          slidesPerView: 5,
+          slidesPerView: 4,
         },
-        // when window width is >= 1024px (lg)
         1024: {
+          slidesPerView: 6,
+        },
+        1280: {
           slidesPerView: 8,
         },
       }"
@@ -31,7 +31,7 @@
 
     <button
       aria-label="Previous slide"
-      class="swiper-button-prev-custom absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-75 transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0"
+      class="swiper-button-prev-custom2 absolute top-1/3 -translate-y-1/2 -left-10 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-75 transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@
     </button>
     <button
       aria-label="Next slide"
-      class="swiper-button-next-custom absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-75 transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0"
+      class="swiper-button-next-custom2 absolute top-1/3 -translate-y-1/2 -right-10 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-75 transition-opacity opacity-0 group-hover:opacity-100 disabled:opacity-0"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

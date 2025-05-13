@@ -157,7 +157,7 @@ function updateCurrentCinema(newCinema: Cinema): void {
 }
 
 watch(uniqueShowDates, (newDates) => {
-  if (newDates.length > 0 && !currentDate.value) {
+  if (newDates.length > 0) {
     currentDate.value = newDates[0];
   }
 });
