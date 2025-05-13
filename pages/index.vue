@@ -29,5 +29,5 @@ const accordionItems = [
 </script>
 
 <template>
-  <div class="h-[1000px]">HElo</div>
+ <main class="h-[1000px] bg-pb-surface"> HElo</main>
 </template>
