@@ -23,8 +23,8 @@ export interface CommentData {
   content: string;
   images: string[];
   keywords: string[];
-  user: User;
-  movie: Movie;
+  user?: User;
+  movie?: Movie;
   createdAt: string;
   updatedAt: string;
 }
