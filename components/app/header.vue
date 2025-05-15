@@ -2,9 +2,8 @@
   <header
     class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
     :class="{
-      'bg-slate-900/90 shadow-lg backdrop-blur-md':
-        isScrolled || !isHeroTransparent,
-      'bg-transparent': !isScrolled && isHeroTransparent,
+      'bg-slate-900/90 shadow-lg backdrop-blur-md': isScrolled,
+      'bg-transparent': !isScrolled,
     }"
     ref="appHeader"
   >
@@ -21,11 +20,7 @@
             />
             <span
               class="text-xl font-bold"
-              :class="
-                isScrolled || !isHeroTransparent
-                  ? 'text-gray-100'
-                  : 'text-white'
-              "
+              :class="isScrolled ? 'text-gray-100' : 'text-white'"
             >
               RoPhim
             </span>
@@ -39,9 +34,8 @@
           <NavigationMenuList
             class="center m-0 flex list-none rounded-lg p-1 transition-colors duration-300"
             :class="{
-              'bg-white/10 backdrop-blur-md shadow-sm':
-                !isScrolled && isHeroTransparent,
-              'bg-slate-700/50': isScrolled || !isHeroTransparent,
+              'bg-white/10 backdrop-blur-md shadow-sm': !isScrolled,
+              'bg-slate-700/50': isScrolled,
             }"
           >
             <NavigationMenuItem
@@ -75,10 +69,10 @@
                   :class="[
                     itemTextClass,
                     isActive(item.href)
-                      ? isScrolled || !isHeroTransparent
+                      ? isScrolled
                         ? 'bg-green-500 !text-white'
                         : 'bg-green-600/70 !text-white font-semibold'
-                      : isScrolled || !isHeroTransparent
+                      : isScrolled
                       ? 'hover:bg-slate-600/80'
                       : 'hover:bg-white/20',
                   ]"
@@ -149,9 +143,7 @@
               <div
                 class="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] border border-gray-300 dark:border-slate-700"
                 :class="
-                  isScrolled || !isHeroTransparent
-                    ? 'bg-gray-100 dark:bg-slate-800'
-                    : 'bg-white/50'
+                  isScrolled ? 'bg-gray-100 dark:bg-slate-800' : 'bg-white/50'
                 "
               />
             </NavigationMenuIndicator>
@@ -174,7 +166,7 @@
             placeholder="Tìm kiếm..."
             class="px-2.5 sm:px-3 py-1.5 sm:py-2 border rounded-md focus:outline-none focus:ring-1 text-xs sm:text-sm pr-8 sm:pr-10 transition-colors duration-300"
             :class="
-              isScrolled || !isHeroTransparent
+              isScrolled
                 ? 'bg-slate-700/80 border-slate-600 focus:ring-green-500 focus:border-transparent text-gray-200 placeholder-gray-400'
                 : 'bg-white/20 backdrop-blur-md border-white/30 focus:ring-green-400 focus:border-transparent text-white placeholder-gray-300'
             "
@@ -185,11 +177,7 @@
             <Icon
               icon="radix-icons:magnifying-glass"
               class="h-4 w-4 sm:h-5 sm:w-5"
-              :class="
-                isScrolled || !isHeroTransparent
-                  ? 'text-gray-400'
-                  : 'text-gray-300'
-              "
+              :class="isScrolled ? 'text-gray-400' : 'text-gray-300'"
             />
           </div>
         </div>
@@ -197,7 +185,7 @@
           to="/login"
           class="ml-2 sm:ml-4 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
           :class="
-            isScrolled || !isHeroTransparent
+            isScrolled
               ? 'bg-green-500 hover:bg-green-600 text-white'
               : 'bg-white/90 hover:bg-white text-green-700'
           "
@@ -214,7 +202,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, defineExpose } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRoute } from "#imports";
 import { Icon } from "@iconify/vue";
 import {
@@ -231,9 +219,6 @@ import {
 const route = useRoute();
 const isScrolled = ref(false);
 const appHeader = ref<HTMLElement | null>(null);
-const isHeroTransparent = computed(() => {
-  return route.path === "/";
-});
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
@@ -255,6 +240,7 @@ interface NavItem {
   href: string;
   children?: NavItem[];
 }
+
 const navigationItems = ref<NavItem[]>([
   {
     name: "Lịch chiếu",
@@ -282,6 +268,7 @@ const navigationItems = ref<NavItem[]>([
     ],
   },
 ]);
+
 const currentTrigger = ref("");
 const isActive = (href: string) => {
   if (href === "/") return route.path === href;
@@ -289,9 +276,8 @@ const isActive = (href: string) => {
 };
 
 const itemTextClass = computed(() => {
-  if (!isHeroTransparent.value || isScrolled.value) {
-    return "text-gray-200 hover:text-green-400 focus:shadow-green-500/50";
-  }
-  return "text-white hover:text-gray-200 focus:shadow-white/50";
+  return isScrolled.value
+    ? "text-gray-200 hover:text-green-400 focus:shadow-green-500/50"
+    : "text-white hover:text-gray-200 focus:shadow-white/50";
 });
 </script>

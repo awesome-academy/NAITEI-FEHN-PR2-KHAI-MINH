@@ -186,7 +186,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import type { PropType } from "vue";
-import SwiperCore from "swiper"; // Import SwiperCore
+import SwiperCore from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import {
   EffectFade,

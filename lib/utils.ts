@@ -13,6 +13,12 @@ export function formatDate(dateString: string): string {
   return `${day}/${month}/${year}`;
 }
 
+export function formatDatetime(datetime: string): string {
+  const [datePart] = datetime.split(" ");
+  const [year, month, day] = datePart.split("-");
+  return `${Number(day)}/${month}/${year}`;
+}
+
 export function getWeekday(dateString: string): string {
   const weekdays: string[] = [
     "Chủ Nhật",
