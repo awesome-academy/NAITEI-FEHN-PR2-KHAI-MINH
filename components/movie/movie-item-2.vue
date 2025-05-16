@@ -1,6 +1,7 @@
 ﻿<template>
   <div
     class="movie-card relative rounded-lg overflow-hidden shadow-xl cursor-pointer group w-full max-w-sm mx-auto bg-gray-800 text-white bg-opacity-0 transition-opacity"
+    @click="onCick(movie.id)"
   >
     <div class="relative h-48 md:h-56">
       <img
@@ -111,6 +112,7 @@ import type { Movie } from "@/types/movie.type";
 import { formatDuration } from "~/lib/utils";
 const props = defineProps<{
   movie: Movie;
+  onCick: (movieId: string) => void;
 }>();
 
 const onImageError = (event: Event, type: "poster" | "cover") => {

@@ -21,7 +21,7 @@ export interface CommentData {
   username: string;
   email: string;
   content: string;
-  images: string[];
+  images?: string[];
   keywords: string[];
   user?: User;
   movie?: Movie;

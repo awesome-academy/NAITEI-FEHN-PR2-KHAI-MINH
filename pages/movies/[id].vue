@@ -243,84 +243,7 @@
               </div>
             </div>
 
-            <div class="text-gray-300 w-full">
-              <div class="flex justify-between items-center mb-4">
-                <span class="font-semibold text-lg"
-                  >Bình luận ({{ comments.length }})</span
-                >
-              </div>
-              <p class="mb-4 text-sm">
-                Vui lòng
-                <span class="text-blue-400 hover:underline cursor-pointer"
-                  >đăng nhập</span
-                >
-                để tham gia bình luận.
-              </p>
-              <div
-                class="flex w-full flex-col bg-[#ffffff10] px-2 py-2 rounded-lg"
-              >
-                <div class="relative mb-4">
-                  <textarea
-                    ref="commentTextarea"
-                    v-model="comment"
-                    class="w-full h-28 p-3 border border-gray-700 rounded-lg bg-gray-900 text-gray-300 focus:outline-none focus:border-blue-500 text-sm resize-y"
-                    placeholder="Viết bình luận"
-                    maxlength="1000"
-                  ></textarea>
-                  <span class="absolute bottom-3 right-3 text-xs text-gray-500"
-                    >{{ comment.length }}/1000</span
-                  >
-                </div>
-                <div class="flex justify-between items-center mb-1">
-                  <label class="flex items-center text-sm cursor-pointer">
-                    <div
-                      class="relative w-10 h-5 rounded-full transition duration-200"
-                      :class="{
-                        'bg-green-500': isSpoiler,
-                        'bg-gray-500': !isSpoiler,
-                      }"
-                      @click="isSpoiler = !isSpoiler"
-                    >
-                      <span
-                        class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-gray-300 transition duration-200"
-                        :class="{ 'translate-x-5': isSpoiler }"
-                      ></span>
-                    </div>
-                    <span class="ml-2 text-gray-500">Tiết lộ?</span>
-                  </label>
-                  <button
-                    :disabled="!comment"
-                    class="bg-green-400 text-white rounded-md px-4 py-2 font-medium text-sm hover:bg-green-500 transition duration-200 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center"
-                  >
-                    Gửi
-                    <Icon
-                      icon="ic:round-arrow-forward-ios"
-                      class="h-4 w-4 ml-2 text-green-600"
-                    />
-                  </button>
-                </div>
-              </div>
-
-              <div class="flex flex-col w-full justify-start items-start mt-6">
-                <CommentItem2
-                  v-for="(comment, index) in comments.slice(0, commentCount)"
-                  :key="index"
-                  :review="comment"
-                />
-
-                <div
-                  v-if="commentCount < comments.length"
-                  class="flex items-center justify-center w-full mt-4"
-                  @click="readMoreComments"
-                >
-                  <button
-                    class="bg-gray-700 text-gray-300 rounded-md px-4 py-2 font-medium text-sm hover:bg-green-500 transition duration-200"
-                  >
-                    Xem thêm bình luận
-                  </button>
-                </div>
-              </div>
-            </div>
+            <CommentForm :comments="comments" :movieId="movieId" />
           </div>
         </div>
       </div>
@@ -347,6 +270,7 @@ import type {
   ShowTimeSelect,
 } from "@/types/show-time.type";
 import type { Cinema } from "@/types/cinema.type";
+import CommentForm from "@/components/movie-detail/comment-form.vue";
 
 const movieData = ref<Movie | null>(null);
 const comments = ref<CommentData[]>([]);
@@ -379,7 +303,10 @@ const fetchComments = async () => {
       `${apiUrlBase}/comments?movieId=${movieId}&_expand=user`
     );
     if (response.status === 200) {
-      comments.value = response.data as CommentData[];
+      comments.value = (response.data as CommentData[]).sort(
+        (a: CommentData, b: CommentData) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
     } else {
       console.error("Error fetching comments:", response.status);
     }
@@ -422,31 +349,13 @@ const onImageError = (event: Event) => {
   imgElement.src = defaultPlaceholder;
 };
 
-const commentTextarea = ref(null);
-const comment = ref("");
-const isSpoiler = ref(false);
-const commentCount = ref(0);
 const cinemaCount = ref(0);
-
-watch(comments, (newComments) => {
-  if (newComments.length > 0) {
-    commentCount.value = newComments.length > 8 ? 8 : newComments.length;
-  } else commentCount.value = 0;
-});
 
 watch(cinemasFromHome, (newCinemas) => {
   if (newCinemas.length > 0) {
     cinemaCount.value = newCinemas.length > 8 ? 8 : newCinemas.length;
   } else cinemaCount.value = 0;
 });
-
-function readMoreComments() {
-  if (comments.value.length - commentCount.value > 8) {
-    commentCount.value += 8;
-  } else {
-    commentCount.value = comments.value.length;
-  }
-}
 
 function readMoreCinemas() {
   if (cinemasFromHome.value.length - cinemaCount.value > 8) {
