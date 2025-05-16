@@ -5,7 +5,7 @@
       <img
         :src="review.movie.posterUrl"
         :alt="`Poster for ${review.movie.title}`"
-        class="w-full h-56 object-cover"
+        class="w-full h-56 object-cover "
       />
       <div
         class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -60,8 +60,8 @@
 
       <div class="mt-auto pt-3 text-right">
         <a
-          :href="`/review/${review.id}`"
-          class="text-pb-accent hover:opacity-80 font-semibold text-sm inline-flex items-center transition-opacity"
+          :href="`/review-phim/${review.id}`"
+          class="text-pb-accent hover:cursor-pointer hover:opacity-80 font-semibold text-sm inline-flex items-center transition-opacity"
         >
           Xem thêm
           <Icon icon="mdi:arrow-right" class="ml-1 h-4 w-4" />
@@ -89,7 +89,7 @@ interface DisplayMovie {
 }
 
 interface DisplayReview {
-  id: string; 
+  id: string;
   movie: DisplayMovie;
   comments: DisplayComment[];
 }

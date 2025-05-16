@@ -1,19 +1,19 @@
 <template>
-  <section class="py-8 md:py-12 text-pb-text">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="py-8 md:py-12 text-pb-text ">
+    <div class="container mx-auto px-8 ">
       <div class="flex items-end mb-8 md:mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-pb-text">
           Bình luận nổi bật
         </h2>
-        <NuxtLink
-          to="/review"
+        <!-- <NuxtLink
+          to="/review-phim"
           class="group inline-flex ml-4 items-center px-2 py-1.5 border border-pb-accent text-pb-accent rounded-full font-semibold text-sm hover:bg-pb-accent hover:text-pb-background transition-colors duration-200"
         >
           <span class="max-w-0 group-hover:max-w-xs opacity-0 group-hover:opacity-100 group-hover:mr-1.5 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap">
             Xem tất cả
           </span>
           <Icon icon="radix-icons:chevron-right" class="h-4 w-4" />
-        </NuxtLink>
+        </NuxtLink> -->
       </div>
 
       <div v-if="hotReviews.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
@@ -128,7 +128,7 @@ const fetchAndProcessReviews = async (isInitialLoad: boolean) => {
     initialLoadError.value = false;
     hotReviews.value = [];
     currentPage.value = 1;
-    allServerMoviesLoaded.value = false; 
+    allServerMoviesLoaded.value = false;
   }
 
   let newValidReviewsCollectedInThisBatch: DisplayReview[] = [];
