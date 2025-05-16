@@ -181,8 +181,9 @@
             />
           </div>
         </div>
-        <NuxtLink
-          to="/login"
+
+        <button
+          @click="openLoginModal"
           class="ml-2 sm:ml-4 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
           :class="
             isScrolled
@@ -194,17 +195,36 @@
             icon="radix-icons:person"
             class="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2"
           />
-          Thành viên
-        </NuxtLink>
+          {{ currentUser ? currentUser.username : "Thành viên" }}
+        </button>
       </div>
     </nav>
   </header>
+
+  <template v-if="!currentUser">
+    <DialogRoot v-model:open="isLoginModalOpen">
+      <LoginForm
+        :close-login-modal="closeLoginModal"
+        :open-logup-modal="openLogupModal"
+      />
+    </DialogRoot>
+
+    <DialogRoot v-model:open="isLogupModalOpen">
+      <LogupForm
+        :close-register-modal="closeLogupModal"
+        :open-login-modal="openLoginModal"
+      />
+    </DialogRoot>
+  </template>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useRoute } from "#imports";
+import { ref, onMounted, onUnmounted, computed, reactive } from "vue";
+import { useRoute } from "#imports"; // For Nuxt 3
 import { Icon } from "@iconify/vue";
+import LoginForm from "@/components/auth/login-form.vue";
+import LogupForm from "@/components/auth/logup-form.vue";
+
 import {
   NavigationMenuContent,
   NavigationMenuIndicator,
@@ -214,11 +234,33 @@ import {
   NavigationMenuRoot,
   NavigationMenuTrigger,
   NavigationMenuViewport,
+  DialogRoot,
 } from "reka-ui";
+import { is } from "date-fns/locale";
+import { useCurrentUser } from "@/lib/utils";
 
 const route = useRoute();
 const isScrolled = ref(false);
 const appHeader = ref<HTMLElement | null>(null);
+const isLoginModalOpen = ref(false);
+const isLogupModalOpen = ref(false);
+
+function openLoginModal() {
+  isLogupModalOpen.value = false;
+  isLoginModalOpen.value = true;
+}
+function closeLoginModal() {
+  isLoginModalOpen.value = false;
+}
+
+function openLogupModal() {
+  isLoginModalOpen.value = false;
+  isLogupModalOpen.value = true;
+}
+
+function closeLogupModal() {
+  isLogupModalOpen.value = false;
+}
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
@@ -242,10 +284,7 @@ interface NavItem {
 }
 
 const navigationItems = ref<NavItem[]>([
-  {
-    name: "Lịch chiếu",
-    href: "/lich-chieu",
-  },
+  { name: "Lịch chiếu", href: "/lich-chieu" },
   {
     name: "Rạp chiếu",
     href: "/rap-chieu",
@@ -268,6 +307,8 @@ const navigationItems = ref<NavItem[]>([
     ],
   },
 ]);
+
+const currentUser = useCurrentUser();
 
 const currentTrigger = ref("");
 const isActive = (href: string) => {
