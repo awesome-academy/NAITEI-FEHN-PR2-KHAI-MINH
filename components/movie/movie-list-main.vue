@@ -25,7 +25,7 @@
       class="w-full"
     >
       <swiper-slide v-for="movie in movies" :key="movie.id">
-        <MovieItem :movie="movie" />
+        <MovieItem :movie="movie" :onCick="goToMovieDetail" />
       </swiper-slide>
     </swiper>
 
@@ -77,11 +77,17 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/a11y";
-
+import { useRouter } from "vue-router";
 import { Navigation, A11y } from "swiper/modules";
 
 interface Props {
   movies: Movie[];
+}
+
+const router = useRouter();
+
+function goToMovieDetail(movieId: string) {
+  router.push(`/movies/${movieId}`);
 }
 
 const props = defineProps<Props>();

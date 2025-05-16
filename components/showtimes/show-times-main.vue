@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="w-full px-12 mb-5">
+  <div class="w-full px-12 mb-5" id="lich-chieu-section">
     <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white">
       Lịch chiếu phim
     </h2>
@@ -102,7 +102,12 @@ onMounted(async () => {
     const response2 = await axios.get(
       `${import.meta.env.VITE_APP_URL_API}/comments?_expand=movie&_expand=user`
     );
-    comments.value = response2.data;
+    comments.value = response2.data
+      .sort(
+        (a: CommentData, b: CommentData) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 20);
 
     if (cinemasFromHome.value.length > 0) {
       currentCinemaId.value = cinemasFromHome.value[0].id;
