@@ -154,7 +154,6 @@ const registerForm = reactive({
   confirmPassword: "",
 });
 
-const config = useRuntimeConfig();
 const apiUrlBase = import.meta.env.VITE_APP_URL_API;
 
 function resetForm() {
@@ -202,6 +201,8 @@ async function handleRegister() {
       role: "user",
       createdAt: currentTime,
       updatedAt: currentTime,
+      avatarUrl:
+        "https://nuxt.com/cdn-cgi/image/w=40,h=40/https://raw.githubusercontent.com/nuxt/modules/main/icons/reka-ui.svg",
     };
 
     const response = await $fetch(`${apiUrlBase}/users`, {

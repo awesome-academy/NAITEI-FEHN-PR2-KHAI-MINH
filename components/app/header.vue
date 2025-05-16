@@ -60,11 +60,11 @@
                 v-else
                 :to="item.href"
                 custom
-                v-slot="{ navigate, href }"
+                v-slot="{ href: itemHref }"
               >
                 <NavigationMenuLink
-                  :href="href"
-                  @click="navigate"
+                  :href="itemHref"
+                  @click="(event: MouseEvent) => handleNavigation(event, item.href)"
                   class="block select-none rounded-[4px] px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
                   :class="[
                     itemTextClass,
@@ -113,13 +113,15 @@
                     <NuxtLink
                       :to="child.href"
                       custom
-                      v-slot="{ navigate, href: childHref }"
+                      v-slot="{ href: childHref }"
                     >
                       <NavigationMenuLink
                         :href="childHref"
                         @click="
-                          navigate();
-                          currentTrigger = '';
+                          (event: MouseEvent) => {
+                            handleNavigation(event, child.href);
+                            currentTrigger = '';
+                          }
                         "
                         class="block select-none rounded-[4px] px-3 py-2 text-sm leading-none no-underline outline-none focus:shadow-[0_0_0_2px]"
                         :class="[
@@ -160,11 +162,14 @@
       </div>
 
       <div class="flex items-center">
-        <div class="relative">
+        <div class="relative mr-2 sm:mr-4" ref="searchContainer">
           <input
             type="text"
-            placeholder="Tìm kiếm..."
-            class="px-2.5 sm:px-3 py-1.5 sm:py-2 border rounded-md focus:outline-none focus:ring-1 text-xs sm:text-sm pr-8 sm:pr-10 transition-colors duration-300"
+            placeholder="Tìm kiếm phim..."
+            v-model="searchQuery"
+            @input="handleSearchInput"
+            @focus="isSearchFocused = true"
+            class="px-2.5 sm:px-3 py-1.5 sm:py-2 border rounded-md focus:outline-none focus:ring-1 text-xs sm:text-sm pr-8 sm:pr-10 transition-colors duration-300 w-40 sm:w-80"
             :class="
               isScrolled
                 ? 'bg-slate-700/80 border-slate-600 focus:ring-green-500 focus:border-transparent text-gray-200 placeholder-gray-400'
@@ -175,16 +180,116 @@
             class="absolute inset-y-0 right-0 pr-2 sm:pr-3 flex items-center pointer-events-none"
           >
             <Icon
+              v-if="!isLoadingSearch"
               icon="radix-icons:magnifying-glass"
               class="h-4 w-4 sm:h-5 sm:w-5"
               :class="isScrolled ? 'text-gray-400' : 'text-gray-300'"
             />
+            <svg
+              v-else
+              class="animate-spin h-4 w-4 sm:h-5 sm:w-5"
+              :class="isScrolled ? 'text-green-400' : 'text-green-300'"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          </div>
+
+          <div
+            v-if="
+              isSearchFocused &&
+              (searchResults.length > 0 ||
+                isLoadingSearch ||
+                (searchQuery && !searchResults.length && !isLoadingSearch))
+            "
+            class="absolute mt-2 w-full max-h-96 overflow-y-auto rounded-md shadow-lg z-50"
+            :class="
+              isScrolled
+                ? 'bg-slate-800 border border-slate-700'
+                : 'bg-slate-900/95 backdrop-blur-md border border-slate-700/50'
+            "
+          >
+            <div
+              v-if="isLoadingSearch && !searchResults.length"
+              class="p-4 text-center text-sm"
+              :class="isScrolled ? 'text-gray-300' : 'text-gray-200'"
+            >
+              Đang tìm kiếm...
+            </div>
+            <div
+              v-else-if="
+                !isLoadingSearch && searchQuery && !searchResults.length
+              "
+              class="p-4 text-center text-sm"
+              :class="isScrolled ? 'text-gray-300' : 'text-gray-200'"
+            >
+              Không tìm thấy kết quả cho "{{ searchQuery }}".
+            </div>
+            <ul v-else-if="searchResults.length > 0">
+              <li v-for="movie in searchResults" :key="movie.id">
+                <NuxtLink
+                  :to="`/movies/${movie.id}`"
+                  @click="clearSearch"
+                  class="flex items-center p-3 hover:bg-white/10"
+                  :class="
+                    isScrolled ? 'hover:bg-slate-700' : 'hover:bg-slate-800/70'
+                  "
+                >
+                  <img
+                    :src="
+                      movie.poster ||
+                      'https://via.placeholder.com/50x75?text=No+Image'
+                    "
+                    :alt="`Poster ${movie.name}`"
+                    class="w-12 h-[72px] object-cover rounded mr-3"
+                  />
+                  <div>
+                    <p
+                      class="font-semibold text-sm"
+                      :class="isScrolled ? 'text-gray-100' : 'text-white'"
+                    >
+                      {{ movie.name }}
+                    </p>
+                    <p
+                      class="text-xs"
+                      :class="isScrolled ? 'text-gray-400' : 'text-gray-300'"
+                    >
+                      {{ movie.subname || movie.releaseYear }}
+                    </p>
+                  </div>
+                </NuxtLink>
+              </li>
+              <li
+                v-if="searchResults.length > 0"
+                class="p-2 text-center text-xs border-t"
+                :class="
+                  isScrolled
+                    ? 'border-slate-700 text-slate-400'
+                    : 'border-slate-700/50 text-slate-500'
+                "
+              >
+                {{ searchResults.length }} kết quả
+              </li>
+            </ul>
           </div>
         </div>
-
         <button
           @click="openLoginModal"
-          class="ml-2 sm:ml-4 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
+          class="ml-2 sm:ml-0 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
           :class="
             isScrolled
               ? 'bg-green-500 hover:bg-green-600 text-white'
@@ -208,7 +313,6 @@
         :open-logup-modal="openLogupModal"
       />
     </DialogRoot>
-
     <DialogRoot v-model:open="isLogupModalOpen">
       <LogupForm
         :close-register-modal="closeLogupModal"
@@ -219,72 +323,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, reactive } from "vue";
-import { useRoute } from "#imports"; // For Nuxt 3
+import { ref, onMounted, onUnmounted, computed, nextTick, watch } from "vue";
+import { useRoute, useRouter } from "#imports";
 import { Icon } from "@iconify/vue";
 import LoginForm from "@/components/auth/login-form.vue";
 import LogupForm from "@/components/auth/logup-form.vue";
-
-import {
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuRoot,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-  DialogRoot,
-} from "reka-ui";
-import { is } from "date-fns/locale";
+import { NavigationMenuContent, DialogRoot } from "reka-ui";
 import { useCurrentUser } from "@/lib/utils";
 
 const route = useRoute();
+const router = useRouter();
 const isScrolled = ref(false);
 const appHeader = ref<HTMLElement | null>(null);
 const isLoginModalOpen = ref(false);
 const isLogupModalOpen = ref(false);
-
-function openLoginModal() {
-  isLogupModalOpen.value = false;
-  isLoginModalOpen.value = true;
-}
-function closeLoginModal() {
-  isLoginModalOpen.value = false;
-}
-
-function openLogupModal() {
-  isLoginModalOpen.value = false;
-  isLogupModalOpen.value = true;
-}
-
-function closeLogupModal() {
-  isLogupModalOpen.value = false;
-}
-
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 20;
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-  handleScroll();
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
-
-defineExpose({ element: appHeader });
 
 interface NavItem {
   name: string;
   href: string;
   children?: NavItem[];
 }
-
 const navigationItems = ref<NavItem[]>([
-  { name: "Lịch chiếu", href: "/lich-chieu" },
+  { name: "Lịch chiếu", href: "/#lich-chieu-section" },
   {
     name: "Rạp chiếu",
     href: "/rap-chieu",
@@ -307,18 +367,161 @@ const navigationItems = ref<NavItem[]>([
     ],
   },
 ]);
-
 const currentUser = useCurrentUser();
-
 const currentTrigger = ref("");
-const isActive = (href: string) => {
-  if (href === "/") return route.path === href;
-  return route.path === href || route.path.startsWith(href + "/");
-};
 
+const isActive = (href: string) => {
+  const [pathOnly] = href.split("#");
+  if (pathOnly === "/") {
+    return route.path === pathOnly;
+  }
+  return route.path === pathOnly || route.path.startsWith(pathOnly + "/");
+};
 const itemTextClass = computed(() => {
   return isScrolled.value
     ? "text-gray-200 hover:text-green-400 focus:shadow-green-500/50"
     : "text-white hover:text-gray-200 focus:shadow-white/50";
 });
+const scrollToElementWhenReady = (elementId: string, attempts = 0) => {
+  const MAX_ATTEMPTS = 15;
+  const DELAY_BETWEEN_ATTEMPTS = 150;
+  const element = document.getElementById(elementId);
+  if (element) {
+    let headerOffset = 0;
+    if (appHeader.value) {
+      headerOffset = appHeader.value.offsetHeight;
+    }
+    const elementPosition =
+      element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  } else if (attempts < MAX_ATTEMPTS) {
+    setTimeout(
+      () => scrollToElementWhenReady(elementId, attempts + 1),
+      DELAY_BETWEEN_ATTEMPTS
+    );
+  }
+};
+const handleNavigation = async (event: MouseEvent, href: string) => {
+  event.preventDefault();
+  const [path, hash] = href.split("#");
+  const targetBasePath = path || "/";
+  if (hash) {
+    if (route.path !== targetBasePath) {
+      await router.push(targetBasePath);
+      scrollToElementWhenReady(hash);
+    } else {
+      scrollToElementWhenReady(hash);
+    }
+  } else {
+    router.push(href);
+  }
+  currentTrigger.value = "";
+};
+function openLoginModal() {
+  isLogupModalOpen.value = false;
+  isLoginModalOpen.value = true;
+}
+function closeLoginModal() {
+  isLoginModalOpen.value = false;
+}
+function openLogupModal() {
+  isLoginModalOpen.value = false;
+  isLogupModalOpen.value = true;
+}
+function closeLogupModal() {
+  isLogupModalOpen.value = false;
+}
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20;
+};
+
+interface Movie {
+  id: string;
+  name: string;
+  subname?: string;
+  poster?: string;
+  releaseYear?: number;
+}
+
+const searchQuery = ref("");
+const searchResults = ref<Movie[]>([]);
+const isLoadingSearch = ref(false);
+const isSearchFocused = ref(false);
+const searchContainer = ref<HTMLElement | null>(null);
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const performSearch = async () => {
+  if (searchQuery.value.trim().length < 1) {
+    searchResults.value = [];
+    isLoadingSearch.value = false;
+    return;
+  }
+  isLoadingSearch.value = true;
+  try {
+    const apiUrlBase = import.meta.env.VITE_APP_URL_API;
+    const response = await fetch(
+      `${apiUrlBase}/movies?name_like=${encodeURIComponent(
+        searchQuery.value.trim()
+      )}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data: Movie[] = await response.json();
+    searchResults.value = data;
+  } catch (error) {
+    console.error("Lỗi khi tìm kiếm phim:", error);
+    searchResults.value = [];
+  } finally {
+    isLoadingSearch.value = false;
+  }
+};
+
+const handleSearchInput = () => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  if (searchQuery.value.trim() === "") {
+    searchResults.value = [];
+    isLoadingSearch.value = false;
+    return;
+  }
+  isLoadingSearch.value = true;
+  searchTimeout = setTimeout(() => {
+    performSearch();
+  }, 2000);
+};
+
+const clearSearch = () => {
+  searchQuery.value = "";
+  searchResults.value = [];
+  isLoadingSearch.value = false;
+  isSearchFocused.value = false;
+};
+
+const handleClickOutsideSearch = (event: MouseEvent) => {
+  if (
+    searchContainer.value &&
+    !searchContainer.value.contains(event.target as Node)
+  ) {
+    isSearchFocused.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
+  document.addEventListener("mousedown", handleClickOutsideSearch);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+  document.removeEventListener("mousedown", handleClickOutsideSearch);
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+});
+
+defineExpose({ element: appHeader });
 </script>
