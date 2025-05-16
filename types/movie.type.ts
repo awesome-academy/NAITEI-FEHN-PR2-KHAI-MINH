@@ -24,6 +24,7 @@ export interface Movie {
   ApiFilmType?: string | null;
   review?: string;
   reviewTitle?: string;
+  country?: string;
   images: Image[];
   ageRating?: string | null;
   createdAt?: string;
