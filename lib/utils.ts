@@ -44,3 +44,46 @@ export function formatDuration(minutes: number | undefined): string {
   }
   return `${m}m`;
 }
+
+const USER_KEY = "user";
+
+export const setUserStorage = (user: object, rememberMe = true) => {
+  const storage = rememberMe ? localStorage : sessionStorage;
+  storage.setItem(USER_KEY, JSON.stringify(user));
+  window.dispatchEvent(new Event("user-storage-updated"));
+};
+
+export const removeUserStorage = () => {
+  localStorage.removeItem(USER_KEY);
+  sessionStorage.removeItem(USER_KEY);
+  window.dispatchEvent(new Event("user-storage-updated"));
+};
+
+export const getUserStorage = () => {
+  try {
+    const raw =
+      localStorage.getItem(USER_KEY) || sessionStorage.getItem(USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.error("Lỗi khi parse user từ storage:", e);
+    return null;
+  }
+};
+
+export const useCurrentUser = () => {
+  const user = ref(getUserStorage());
+
+  const updateUser = () => {
+    user.value = getUserStorage();
+  };
+
+  if (process.client) {
+    window.addEventListener("storage", (e) => {
+      if (e.key === USER_KEY) updateUser();
+    });
+
+    window.addEventListener("user-storage-updated", updateUser);
+  }
+
+  return user;
+};
