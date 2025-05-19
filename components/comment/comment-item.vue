@@ -4,7 +4,7 @@
   >
     <div class="mr-3 flex-shrink-0">
       <img
-        :src="review.user.avatarUrl"
+        :src="review.user?.avatarUrl"
         :alt="review.username"
         class="w-10 h-10 rounded-full object-cover"
         referrerpolicy="no-referrer"
@@ -33,7 +33,7 @@
             d="M6.3 2.841A1.5 1.5 0 0 0 4 4.11V15.89a1.5 1.5 0 0 0 2.3 1.269l9.344-5.89a1.5 1.5 0 0 0 0-2.538L6.3 2.84Z"
           />
         </svg>
-        <span class="truncate">{{ review.movie.name }}</span>
+        <span class="truncate">{{ review.movie?.name }}</span>
       </div>
     </div>
   </div>
