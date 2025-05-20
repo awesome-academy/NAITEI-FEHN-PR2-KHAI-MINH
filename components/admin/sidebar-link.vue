@@ -1,7 +1,7 @@
 ﻿<template>
   <NuxtLink
     :to="to"
-    class="flex items-center py-2.5 px-4 pr-6 rounded-md transition-colors duration-150 ease-in-out hover:bg-green-500 hover:text-white group text-sm"
+    class="flex items-center py-2.5 px-4 pr-12 rounded-md transition-colors duration-150 ease-in-out hover:bg-green-500 hover:text-white group text-sm"
     active-class=" bg-green-500 text-white shadow-md"
   >
     <Icon

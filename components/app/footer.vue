@@ -1,16 +1,16 @@
 <template>
-    <footer
-      class=" w-full text-pb-text-secondary container relative flex mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"
-    >
-      <div class="flex-1">
-        <div class="mb-6 md:mb-8">
-          <span
-            class="inline-block bg-red-600 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full"
-          >
-            <Icon icon="twemoji:star" class="inline-block mr-1 mb-0.5" />
-            Chúc bạn xem phim vui vẻ!
-          </span>
-        </div>
+  <footer
+    class="w-full text-pb-text-secondary relative flex px-12 sm:px-12 lg:px-12 py-8 md:py-12"
+  >
+    <div class="flex-1">
+      <div class="mb-6 md:mb-8">
+        <span
+          class="inline-block bg-red-600 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full"
+        >
+          <Icon icon="twemoji:star" class="inline-block mr-1 mb-0.5" />
+          Chúc bạn xem phim vui vẻ!
+        </span>
+      </div>
 
       <div
         class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center mb-6 md:mb-8"
