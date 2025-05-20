@@ -87,3 +87,23 @@ export const useCurrentUser = () => {
 
   return user;
 };
+
+export const getStatusText = (status: string): string => {
+  if (status === "now_showing") {
+    return "Đang chiếu";
+  }
+  if (status === "coming_soon") {
+    return "Sắp chiếu";
+  }
+  return "Đã chiếu";
+};
+
+export const getStatusClass = (status: string): string => {
+  if (status === "now_showing") {
+    return "bg-green-500 text-green-100";
+  }
+  if (status === "coming_soon") {
+    return "bg-yellow-500 text-yellow-100";
+  }
+  return "bg-gray-500 text-slate-200";
+};

@@ -2,70 +2,44 @@
   <div class="min-h-screen text-white">
     <div class="movie-details-component">
       <div class="relative w-full h-[81vh] bg-cover bg-center">
-        <img
-          :src="movieData?.coverImage"
-          alt="Movie background"
+        <img :src="movieData?.coverImage" alt="Movie background"
           class="w-full h-full object-cover object-center scale-120"
-          style="transform-origin: center; object-position: 50% 10%"
-          @error="onImageError"
-        />
+          style="transform-origin: center; object-position: 50% 10%" @error="onImageError" />
+        <div class="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white/40 to-transparent"></div>
+        <div class="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-white/40 to-transparent"></div>
         <div
-          class="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white/40 to-transparent"
-        ></div>
-        <div
-          class="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-white/40 to-transparent"
-        ></div>
-        <div
-          class="absolute bottom-0 left-0 right-0 h-1/2 sm:h-2/3 bg-gradient-to-t from-[#17171F] via-[#17171F]/40 to-transparent"
-        ></div>
+          class="absolute bottom-0 left-0 right-0 h-1/2 sm:h-2/3 bg-gradient-to-t from-[#17171F] via-[#17171F]/40 to-transparent">
+        </div>
       </div>
 
       <div class="relative z-10 -mt-[26vh] flex justify-center">
         <div
-          class="w-[84vw] flex flex-row justify-start rounded-3xl bg-gradient-to-b from-[#17171F]/70 to-[#17171F]/100 from-50% px-10 py-10 gap-4"
-        >
+          class="w-[84vw] flex flex-row justify-start rounded-3xl bg-gradient-to-b from-[#17171F]/70 to-[#17171F]/100 from-50% px-10 py-10 gap-4">
           <div class="flex flex-col justify-start items-start w-1/4">
             <div class="w-42 h-60">
-              <img
-                :src="movieData?.poster"
-                :alt="`Poster phim ${movieData?.name}`"
-                class="w-full h-full object-cover rounded-xl"
-              />
+              <img :src="movieData?.poster" :alt="`Poster phim ${movieData?.name}`"
+                class="w-full h-full object-cover rounded-xl" />
             </div>
 
             <div class="flex-1 pt-4 md:pt-6 md:pr-6 pb-6 px-4 md:px-0">
               <h1 class="text-xl font-meidum mb-1">{{ movieData?.name }}</h1>
-              <p
-                v-if="movieData?.subname"
-                class="text-base text-green-500 mb-4"
-              >
+              <p v-if="movieData?.subname" class="text-base text-green-500 mb-4">
                 {{ movieData?.subname }}
               </p>
 
               <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
-                <span
-                  v-if="movieData?.rating?.RatingValue"
-                  class="bg-green-500 text-black font-bold px-2.5 py-1 rounded"
-                  >IMDb {{ movieData?.rating.RatingValue.toFixed(1) }}</span
-                >
-                <span
-                  v-if="movieData?.ageRating"
-                  class="border border-gray-500 text-gray-300 px-2.5 py-1 rounded"
-                  >{{ movieData?.ageRating }}</span
-                >
-                <span
-                  v-if="movieData?.releaseYear"
-                  class="border border-gray-500 text-gray-300 px-2.5 py-1 rounded"
-                  >{{ movieData?.releaseYear }}</span
-                >
+                <span v-if="movieData?.rating?.RatingValue"
+                  class="bg-green-500 text-black font-bold px-2.5 py-1 rounded">IMDb {{
+                    movieData?.rating.RatingValue.toFixed(1) }}</span>
+                <span v-if="movieData?.ageRating" class="border border-gray-500 text-gray-300 px-2.5 py-1 rounded">{{
+                  movieData?.ageRating }}</span>
+                <span v-if="movieData?.releaseYear" class="border border-gray-500 text-gray-300 px-2.5 py-1 rounded">{{
+                  movieData?.releaseYear }}</span>
               </div>
 
               <div class="flex flex-wrap items-center gap-2 mb-5">
-                <span
-                  v-for="genre in movieData?.genres"
-                  :key="genre"
-                  class="bg-gray-700 text-gray-300 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-600 cursor-pointer"
-                >
+                <span v-for="genre in movieData?.genres" :key="genre"
+                  class="bg-gray-700 text-gray-300 text-xs font-medium px-3 py-1 rounded-full hover:bg-gray-600 cursor-pointer">
                   {{ genre }}
                 </span>
               </div>
@@ -108,14 +82,9 @@
 
           <div class="flex-1 flex flex-col justify-start items-start">
             <div class="text-gray-300 w-full">
-              <span class="font-semibold text-lg"
-                >Lịch chiếu phim {{ movieData?.name }}</span
-              >
+              <span class="font-semibold text-lg">Lịch chiếu phim {{ movieData?.name }}</span>
 
-              <div
-                v-if="uniqueShowDates.length === 0"
-                class="my-4 text-green-500 text-sm font-semibold"
-              >
+              <div v-if="uniqueShowDates.length === 0" class="my-4 text-green-500 text-sm font-semibold">
                 Hiện tại phim không có lịch chiếu tại rạp
                 {{
                   cinemasFromHome.filter(
@@ -123,120 +92,112 @@
                   )[0]?.name
                 }}.
               </div>
-              <div
-                v-else
-                class="flex w-full flex-row justify-start items-center gap-2 my-4"
-              >
-                <div
-                  v-for="date in uniqueShowDates"
-                  :key="date.date"
-                  :class="[
-                    'group w-1/5 box-sizing w-40 flex flex-col justify-between bg-[#282b3a] py-2 px-3 items-start gap-2 cursor-pointer',
-                    date.date === currentDate?.date
-                      ? 'border-t-2 border-green-500'
-                      : 'hover:border-green-500 hover:border-t-2',
-                  ]"
-                  @click="updateCurrentDate(date)"
-                  style="opacity: 0.8"
-                >
+              <div v-else class="flex w-full flex-row justify-start items-center gap-2 my-4">
+                <div v-for="date in uniqueShowDates" :key="date.date" :class="[
+                  'group w-1/5 box-sizing w-40 flex flex-col justify-between bg-[#282b3a] py-2 px-3 items-start gap-2 cursor-pointer',
+                  date.date === currentDate?.date
+                    ? 'border-t-2 border-green-500'
+                    : 'hover:border-green-500 hover:border-t-2',
+                ]" @click="updateCurrentDate(date)" style="opacity: 0.8">
                   <span class="text-sm text-gray-500">{{ date.date }}</span>
-                  <span
-                    :class="[
-                      'text-base font-semibold group-hover:text-green-500',
-                      date.date === currentDate?.date
-                        ? 'text-green-500'
-                        : 'text-white',
-                    ]"
-                  >
+                  <span :class="[
+                    'text-base font-semibold group-hover:text-green-500',
+                    date.date === currentDate?.date
+                      ? 'text-green-500'
+                      : 'text-white',
+                  ]">
                     {{ date.weekDay }}
                   </span>
                 </div>
               </div>
 
               <div class="w-full flex flex-col justify-start items-start">
-                <div
-                  v-for="cinema in cinemasFromHome.slice(0, cinemaCount)"
-                  :key="cinema.id"
-                  @click="updateCurrentCinema(cinema)"
-                  class="w-full flex flex-col justify-start items-start"
-                  :class="{
+                <div v-for="cinema in cinemasFromHome.slice(0, cinemaCount)" :key="cinema.id"
+                  @click="updateCurrentCinema(cinema)" class="w-full flex flex-col justify-start items-start" :class="{
                     'shadow-lg bg-black bg-opacity-20':
                       cinema.id === currentCinemaId,
-                  }"
-                >
+                  }">
                   <div
-                    class="flex w-full flex-row justify-between items-center p-3 pr-6 space-x-3 cursor-pointer hover:shadow-lg hover:bg-black hover:bg-opacity-20"
-                  >
+                    class="flex w-full flex-row justify-between items-center p-3 pr-6 space-x-3 cursor-pointer hover:shadow-lg hover:bg-black hover:bg-opacity-20">
                     <div class="flex flex-row justify-start items-center gap-3">
-                      <img
-                        :src="cinema.logo"
-                        :alt="cinema.name"
-                        class="w-10 h-10 object-contain rounded flex-shrink-0"
-                        @error="onImageError"
-                      />
-                      <div
-                        class="flex flex-col justify-center items-start gap-1"
-                      >
-                        <span
-                          class="flex-grow text-sm duration-300"
-                          :class="{
-                            'text-green-400': cinema.id === currentCinemaId,
-                            'text-white group-hover:text-green-400':
-                              cinema.id !== currentCinemaId,
-                          }"
-                        >
+                      <img :src="cinema.logo" :alt="cinema.name" class="w-10 h-10 object-contain rounded flex-shrink-0"
+                        @error="onImageError" />
+                      <div class="flex flex-col justify-center items-start gap-1">
+                        <span class="flex-grow text-sm duration-300" :class="{
+                          'text-green-400': cinema.id === currentCinemaId,
+                          'text-white group-hover:text-green-400':
+                            cinema.id !== currentCinemaId,
+                        }">
                           {{ cinema.name }}
                         </span>
 
-                        <span
-                          class="flex-grow text-xs duration-300"
-                          :class="{
-                            'text-gray-400': cinema.id === currentCinemaId,
-                            hidden: cinema.id !== currentCinemaId,
-                          }"
-                        >
+                        <span class="flex-grow text-xs duration-300" :class="{
+                          'text-gray-400': cinema.id === currentCinemaId,
+                          hidden: cinema.id !== currentCinemaId,
+                        }">
                           {{ cinema.address }}
                         </span>
                       </div>
                     </div>
-                    <Icon
-                      :icon="
-                        cinema.id === currentCinemaId
-                          ? 'heroicons:chevron-down-20-solid'
-                          : 'heroicons:chevron-right-20-solid'
-                      "
-                      class="w-5 h-5 text-gray-400 duration-300"
-                      :class="{
+                    <Icon :icon="cinema.id === currentCinemaId
+                      ? 'heroicons:chevron-down-20-solid'
+                      : 'heroicons:chevron-right-20-solid'
+                      " class="w-5 h-5 text-gray-400 duration-300" :class="{
                         'text-green-400': cinema.id === currentCinemaId,
                         'group-hover:text-green-500':
                           cinema.id !== currentCinemaId,
-                      }"
-                    />
+                      }" />
                   </div>
 
-                  <div
-                    v-if="cinema.id === currentCinemaId && showTimes.length > 0"
-                    class="flex flex-wrap gap-2 pl-4 my-4"
-                  >
-                    <UButton
-                      v-for="showTimeSlot in groupedShowTimeSelect"
-                      :key="showTimeSlot.id"
+                  <div v-if="cinema.id === currentCinemaId && showTimes.length > 0"
+                    class="flex flex-wrap gap-2 pl-4 my-4">
+                    <UButton v-for="showTimeSlot in groupedShowTimeSelect" :key="showTimeSlot.id"
                       class="border border-green-500 px-2 py-1 rounded-md text-green-500 text-base cursor-pointer hover:bg-green-500 hover:bg-opacity-10"
-                      block
-                      color="primary"
-                    >
+                      block color="primary" @click="openRekaDialog(showTimeSlot)">
                       {{ showTimeSlot.showTimeDuration.replace(" ~ ", " - ") }}
                     </UButton>
                   </div>
+                  <DialogRoot v-model:open="isRekaDialogOpen">
+                    <DialogPortal>
+                      <DialogOverlay
+                        class="fixed inset-0 data-[state=open]:animate-overlayShow bg-black/50 dark:bg-black/70 z-40 backdrop-blur-sm" />
+                      <DialogContent
+                        class="data-[state=open]:animate-contentShow  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95vw] sm:w-[90vw] max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[90vh]  bg-white dark:bg-gray-900 rounded-lg shadow-xl focus:outline-none flex flex-col"
+                        @escape-key-down="isRekaDialogOpen = false" @pointer-down-outside="isRekaDialogOpen = false">
+                        <div class="flex flex-col flex-grow h-full bg-pb-surface dark:bg-gray-800 rounded-lg">
+                          <div class="flex items-center justify-between p-4 border-b border-pb-accent">
+                            <DialogTitle class="text-lg font-semibold text-white">
+                              Đặt vé cho phim {{ movieData!.name }} - {{ cinema.name }} -
+                              {{ getRoomName(selectedShowTime!.roomId) }} -
+                              {{ selectedShowTime ? formatShowTime(selectedShowTime.showTimeDuration) : '' }}
+                            </DialogTitle>
+                            <button type="button"
+                              class="p-1 rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pb-accent dark:focus:ring-offset-gray-800"
+                              @click="isRekaDialogOpen = false" aria-label="Đóng">
+                              <Icon icon="heroicons:x-mark-20-solid" class="w-5 h-5" />
+                            </button>
+                          </div>
+
+                          <div v-if="selectedShowTime" class="p-4 md:p-6  ">
+                            <BookingModal :room-id="selectedShowTime.roomId" :show-time-id="selectedShowTime.id"
+                              :movie-id="movieId" :cinema-id="cinema.id" :movie-name="movieData!.name"
+                              :show-time-details="selectedShowTime.showTimeDuration" :cinema-name="cinema.name"
+                              :room-name="getRoomName(selectedShowTime.roomId)" @checkout="handleCheckout" />
+                          </div>
+                          <div v-else class="p-4 text-center flex-grow flex items-center justify-center">
+                            <p class="text-gray-500 dark:text-gray-400">Đang tải dữ liệu suất chiếu...</p>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </DialogPortal>
+                  </DialogRoot>
                 </div>
-                <div
-                  v-if="cinemaCount < cinemasFromHome.length"
-                  class="flex items-center justify-center w-full mt-4"
-                  @click="readMoreCinemas"
-                >
+
+
+                <div v-if="cinemaCount < cinemasFromHome.length" class="flex items-center justify-center w-full mt-4"
+                  @click="readMoreCinemas">
                   <button
-                    class="bg-gray-700 text-gray-300 rounded-md px-4 py-2 font-medium text-sm hover:bg-green-500 transition duration-200"
-                  >
+                    class="bg-gray-700 text-gray-300 rounded-md px-4 py-2 font-medium text-sm hover:bg-green-500 transition duration-200">
                     Xem thêm
                   </button>
                 </div>
@@ -271,6 +232,7 @@ import type {
 } from "@/types/show-time.type";
 import type { Cinema } from "@/types/cinema.type";
 import CommentForm from "@/components/movie-detail/comment-form.vue";
+import type { BookingPayload } from "~/types/booking.type";
 
 const movieData = ref<Movie | null>(null);
 const comments = ref<CommentData[]>([]);
@@ -297,6 +259,25 @@ const fetchMovieData = async () => {
   }
 };
 
+
+const isRekaDialogOpen = ref(false);
+const selectedShowTime = ref<ShowTimeSelect | null>(null);
+
+const openRekaDialog = (showTimeData: ShowTimeSelect) => {
+  selectedShowTime.value = showTimeData;
+  isRekaDialogOpen.value = true;
+};
+
+const formatShowTime = (duration: string) => {
+  return duration.replace(" ~ ", " - ");
+};
+
+
+
+const getRoomName = (roomId: string): string => {
+  return 'Phòng chiếu' + roomId;
+};
+
 const fetchComments = async () => {
   try {
     const response = await axios.get(
@@ -315,6 +296,45 @@ const fetchComments = async () => {
   }
 };
 
+
+const handleCheckout = async (orderDetails: BookingPayload) => {
+  console.log('Checkout data received in parent:', orderDetails);
+
+  try {
+
+    const currentUserId = '642cba0f-d810-4241-b073-ef64f5922eaf';
+
+    const payloadToServer = {
+      ...orderDetails,
+      userId: currentUserId,
+
+      bookingRequestTime: new Date().toISOString(),
+    };
+
+    const response = await fetch('http://localhost:5000/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payloadToServer),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Server error:', errorData);
+      throw new Error(`Lỗi khi tạo đơn đặt vé: ${errorData.message || response.status}`);
+    }
+
+    const newBooking = await response.json();
+    console.log('Đơn đặt vé đã được tạo thành công:', newBooking);
+    isRekaDialogOpen.value = false;
+    alert(`Đặt vé thành công! Mã đặt vé của bạn là: ${newBooking.id}`); // Ví dụ thông báo đơn giản
+
+  } catch (error) {
+    console.error('Không thể hoàn tất đặt vé:', error);
+    alert(`Đã có lỗi xảy ra khi đặt vé: ${error instanceof Error ? error.message : String(error)}`);
+  }
+};
 const fetchCinemas = async () => {
   try {
     const response1 = await axios.get(
@@ -405,8 +425,8 @@ const groupedShowTimeSelect = computed((): ShowTimeSelect[] => {
   const showTimesOfDate = computed(() =>
     currentDate.value
       ? showTimes.value.filter(
-          (showTime) => showTime.showDate === currentDate.value!.showDate
-        )
+        (showTime) => showTime.showDate === currentDate.value!.showDate
+      )
       : []
   );
 

@@ -1,5 +1,5 @@
 ﻿export interface SeatType {
-  type: number;
+  type: string;
   name: string;
   avatar: string;
   description: string;

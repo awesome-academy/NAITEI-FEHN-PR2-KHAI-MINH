@@ -15,6 +15,7 @@ export interface Movie {
   poster: string;
   coverImage?: string;
   releaseYear?: number;
+  status?: string;
   duration?: number;
   rating?: Rating;
   description?: string;
