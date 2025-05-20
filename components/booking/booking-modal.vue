@@ -1,29 +1,18 @@
 <template>
   <div class="p-6 bg-pb-background text-pb-text flex flex-col">
     <div v-if="pendingRoom || pendingSeats" class="text-center py-10">
-      <div
-        class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pb-accent"
-      ></div>
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pb-accent"></div>
       <p class="mt-4 text-sm text-pb-text-secondary">Đang tải sơ đồ ghế...</p>
     </div>
-    <div
-      v-else-if="roomError || seatsError"
-      class="text-center py-10 text-red-600 dark:text-red-400"
-    >
+    <div v-else-if="roomError || seatsError" class="text-center py-10 text-red-600 dark:text-red-400">
       <p class="font-medium">Lỗi khi tải dữ liệu ghế:</p>
       <p class="text-sm">{{ roomError?.message || seatsError?.message }}</p>
-      <button
-        type="button"
-        @click="retryFetch"
-        class="mt-4 px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-medium rounded-md hover:bg-red-200 dark:hover:bg-red-800/70 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-pb-background"
-      >
+      <button type="button" @click="retryFetch"
+        class="mt-4 px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-medium rounded-md hover:bg-red-200 dark:hover:bg-red-800/70 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-pb-background">
         Thử lại
       </button>
     </div>
-    <div
-      v-else-if="room && seats"
-      class="cinema-seat-layout flex-grow max-h-[60vh] overflow-y-scroll"
-    >
+    <div v-else-if="room && seats" class="cinema-seat-layout flex-grow max-h-[60vh] overflow-y-scroll">
       <div class="mb-6 text-center">
         <h4 class="text-lg font-medium text-pb-text">{{ movieName }}</h4>
         <p class="text-sm text-pb-text-secondary">
@@ -32,40 +21,25 @@
       </div>
 
       <div
-        class="screen-indicator bg-pb-border text-pb-text-secondary font-semibold py-1 px-4 rounded text-center mb-4"
-      >
+        class="screen-indicator bg-pb-border text-pb-text-secondary font-semibold py-1 px-4 rounded text-center mb-4">
         MÀN HÌNH
       </div>
 
       <div class="seat-grid-container my-4 overflow-x-auto">
         <div class="seat-grid inline-grid gap-1 md:gap-1.5" :style="gridStyle">
-          <template
-            v-for="rowIndex in room.totalRow"
-            :key="`row-${rowIndex - 1}`"
-          >
-            <template
-              v-for="colIndex in room.totalCol"
-              :key="`col-${colIndex - 1}`"
-            >
-              <button
-                type="button"
-                :style="getSeatStyle(getSeatAt(rowIndex - 1, colIndex - 1))"
-                :class="getSeatClasses(getSeatAt(rowIndex - 1, colIndex - 1))"
-                :disabled="
-                  isSeatDisabled(getSeatAt(rowIndex - 1, colIndex - 1))
-                "
-                @click="
-                  toggleSeatSelection(getSeatAt(rowIndex - 1, colIndex - 1))
-                "
-                class="seat-item w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-xs md:text-sm font-medium rounded flex items-center justify-center transition-all duration-150"
-              >
-                <span
-                  v-if="
-                    getSeatAt(rowIndex - 1, colIndex - 1) &&
-                    getSeatAt(rowIndex - 1, colIndex - 1)?.seatType !== '-1' &&
-                    getSeatAt(rowIndex - 1, colIndex - 1)?.momoId
-                  "
-                >
+          <template v-for="rowIndex in room.totalRow" :key="`row-${rowIndex - 1}`">
+            <template v-for="colIndex in room.totalCol" :key="`col-${colIndex - 1}`">
+              <button type="button" :style="getSeatStyle(getSeatAt(rowIndex - 1, colIndex - 1))"
+                :class="getSeatClasses(getSeatAt(rowIndex - 1, colIndex - 1))" :disabled="isSeatDisabled(getSeatAt(rowIndex - 1, colIndex - 1))
+                  " @click="
+                    toggleSeatSelection(getSeatAt(rowIndex - 1, colIndex - 1))
+                    "
+                class="seat-item w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-xs md:text-sm font-medium rounded flex items-center justify-center transition-all duration-150">
+                <span v-if="
+                  getSeatAt(rowIndex - 1, colIndex - 1) &&
+                  getSeatAt(rowIndex - 1, colIndex - 1)?.seatType !== '-1' &&
+                  getSeatAt(rowIndex - 1, colIndex - 1)?.momoId
+                ">
                   {{
                     getSeatDisplayName(getSeatAt(rowIndex - 1, colIndex - 1))
                   }}
@@ -77,35 +51,22 @@
       </div>
 
       <div
-        class="seat-legend mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2 text-xs md:text-sm text-pb-text"
-      >
-        <div
-          v-for="seatType in room.seatTypes"
-          :key="seatType.type"
-          class="flex items-center"
-        >
-          <span
-            class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-pb-border"
-            :style="{ backgroundColor: seatType.color }"
-          ></span>
+        class="seat-legend mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2 text-xs md:text-sm text-pb-text">
+        <div v-for="seatType in room.seatTypes" :key="seatType.type" class="flex items-center">
+          <span class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-pb-border"
+            :style="{ backgroundColor: seatType.color }"></span>
           <span class="text-pb-text">{{ seatType.name }}</span>
         </div>
         <div class="flex items-center">
-          <span
-            class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 bg-pb-text-secondary border border-pb-border"
-          ></span>
+          <span class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 bg-pb-text-secondary border border-pb-border"></span>
           <span class="text-pb-text">Đã đặt</span>
         </div>
         <div class="flex items-center">
-          <span
-            class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-pb-accent bg-[#2563eb]"
-          ></span>
+          <span class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-pb-accent bg-[#2563eb]"></span>
           <span class="text-pb-text">Ghế bạn chọn</span>
         </div>
         <div class="flex items-center">
-          <span
-            class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-dashed border-gray-400"
-          ></span>
+          <span class="w-4 h-4 md:w-5 md:h-5 rounded-sm mr-2 border border-dashed border-gray-400"></span>
           <span class="text-pb-text">Lối đi</span>
         </div>
       </div>
@@ -115,10 +76,8 @@
         Không tìm thấy thông tin phòng hoặc ghế.
       </p>
     </div>
-    <div
-      v-if="selectedSeats.length > 0"
-      class="selected-info-and-actions mt-auto pt-4 border-t border-pb-border flex flex-wrap items-center justify-between gap-4"
-    >
+    <div v-if="selectedSeats.length > 0"
+      class="selected-info-and-actions mt-auto pt-4 border-t border-pb-border flex flex-wrap items-center justify-between gap-4">
       <div class="selected-seats-details">
         <p class="font-semibold text-lg text-pb-text">
           Ghế đã chọn:
@@ -134,12 +93,8 @@
         </p>
       </div>
 
-      <button
-        type="button"
-        @click="openComboDialog"
-        :disabled="selectedSeats.length === 0"
-        class="px-6 py-2 bg-pb-accent text-pb-background text-sm font-medium rounded-md shadow-sm hover:bg-pb-accent/90 focus:outline-none focus:ring-2 focus:ring-pb-accent focus:ring-offset-2 dark:focus:ring-offset-pb-background disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+      <button type="button" @click="openComboDialog" :disabled="selectedSeats.length === 0"
+        class="px-6 py-2 bg-pb-accent text-pb-background text-sm font-medium rounded-md shadow-sm hover:bg-pb-accent/90 focus:outline-none focus:ring-2 focus:ring-pb-accent focus:ring-offset-2 dark:focus:ring-offset-pb-background disabled:opacity-50 disabled:cursor-not-allowed">
         Tiếp tục chọn combo
       </button>
     </div>
@@ -147,43 +102,29 @@
     <DialogRoot v-model:open="isComboDialogOpen">
       <DialogPortal>
         <DialogOverlay
-          class="fixed z-[55] w-[100vw] h-[100vh] top-0 left-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm data-[state=open]:animate-overlayShow"
-        />
+          class="fixed z-[55] w-[100vw] h-[100vh] top-0 left-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm data-[state=open]:animate-overlayShow" />
         <DialogContent
           class="fixed left-1/2 top-1/2 z-[60] w-[90vw] max-w-md flex overflow-hidden flex-col -translate-x-1/2 -translate-y-1/2 rounded-xl bg-pb-surface text-pb-text p-0 shadow-2xl data-[state=open]:animate-contentShow focus:outline-none flex flex-col max-h-[85vh]"
-          @escape-key-down="isComboDialogOpen = false"
-          @pointer-down-outside="isComboDialogOpen = false"
-        >
+          @escape-key-down="isComboDialogOpen = false" @pointer-down-outside="isComboDialogOpen = false">
           <div
-            class="flex items-center justify-between px-6 py-4 border-b border-pb-border sticky top-0 bg-pb-surface z-10"
-          >
+            class="flex items-center justify-between px-6 py-4 border-b border-pb-border sticky top-0 bg-pb-surface z-10">
             <DialogTitle class="text-lg font-semibold text-pb-text">
-              <Icon
-                icon="mdi:popcorn"
-                class="inline-block mr-2 text-pb-accent"
-              />
+              <Icon icon="mdi:popcorn" class="inline-block mr-2 text-pb-accent" />
               Chọn Combo Bắp Nước
             </DialogTitle>
             <DialogClose as-child>
-              <button
-                type="button"
+              <button type="button"
                 class="p-1 rounded-full text-pb-text-secondary hover:text-pb-text focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-pb-surface focus:ring-pb-accent"
-                aria-label="Đóng"
-              >
+                aria-label="Đóng">
                 <Icon icon="heroicons:x-mark-20-solid" class="h-6 w-6" />
               </button>
             </DialogClose>
           </div>
 
           <div class="flex-grow overflow-y-auto p-6 space-y-6">
-            <div
-              class="flex items-start gap-4 p-4 border border-pb-border rounded-lg shadow-sm bg-pb-background"
-            >
-              <img
-                src="~/assets/images/sweet-combo.png"
-                alt="Sweet Combo"
-                class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-md flex-shrink-0 bg-pb-text p-1"
-              />
+            <div class="flex items-start gap-4 p-4 border border-pb-border rounded-lg shadow-sm bg-pb-background">
+              <img src="~/assets/images/sweet-combo.png" alt="Sweet Combo"
+                class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-md flex-shrink-0 bg-pb-text p-1" />
               <div class="flex-grow">
                 <h5 class="text-base font-semibold text-pb-text">
                   {{ fixedCombos[0].name }} -
@@ -193,23 +134,18 @@
                   {{ fixedCombos[0].description }}
                 </p>
                 <div class="quantity-control flex items-center gap-2 mt-1">
-                  <button
-                    @click="decreaseComboQuantity(fixedCombos[0].id)"
+                  <button @click="decreaseComboQuantity(fixedCombos[0].id)"
                     :disabled="getComboQuantity(fixedCombos[0].id) === 0"
                     class="p-1.5 rounded-full bg-pb-border text-pb-text-secondary hover:bg-pb-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    aria-label="Giảm số lượng"
-                  >
+                    aria-label="Giảm số lượng">
                     <Icon icon="heroicons:minus-solid" class="h-5 w-5" />
                   </button>
-                  <span
-                    class="w-8 text-center font-medium text-pb-text tabular-nums"
-                    >{{ getComboQuantity(fixedCombos[0].id) }}</span
-                  >
-                  <button
-                    @click="increaseComboQuantity(fixedCombos[0].id)"
+                  <span class="w-8 text-center font-medium text-pb-text tabular-nums">{{
+                    getComboQuantity(fixedCombos[0].id)
+                  }}</span>
+                  <button @click="increaseComboQuantity(fixedCombos[0].id)"
                     class="p-1.5 rounded-full bg-pb-accent text-pb-background hover:bg-pb-accent/90 transition-colors"
-                    aria-label="Tăng số lượng"
-                  >
+                    aria-label="Tăng số lượng">
                     <Icon icon="heroicons:plus-solid" class="h-5 w-5" />
                   </button>
                 </div>
@@ -217,13 +153,9 @@
             </div>
 
             <div
-              class="combo-item flex items-start gap-4 p-4 border border-pb-border rounded-lg shadow-sm bg-pb-background"
-            >
-              <img
-                src="~/assets/images/beta-combo.png"
-                alt="Beta Combo"
-                class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-md flex-shrink-0 bg-pb-text p-1"
-              />
+              class="combo-item flex items-start gap-4 p-4 border border-pb-border rounded-lg shadow-sm bg-pb-background">
+              <img src="~/assets/images/beta-combo.png" alt="Beta Combo"
+                class="w-20 h-20 md:w-24 md:h-24 object-contain rounded-md flex-shrink-0 bg-pb-text p-1" />
               <div class="flex-grow">
                 <h5 class="text-base font-semibold text-pb-text">
                   {{ fixedCombos[1].name }} -
@@ -233,23 +165,18 @@
                   {{ fixedCombos[1].description }}
                 </p>
                 <div class="quantity-control flex items-center gap-2 mt-1">
-                  <button
-                    @click="decreaseComboQuantity(fixedCombos[1].id)"
+                  <button @click="decreaseComboQuantity(fixedCombos[1].id)"
                     :disabled="getComboQuantity(fixedCombos[1].id) === 0"
                     class="p-1.5 rounded-full bg-pb-border text-pb-text-secondary hover:bg-pb-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    aria-label="Giảm số lượng"
-                  >
+                    aria-label="Giảm số lượng">
                     <Icon icon="heroicons:minus-solid" class="h-5 w-5" />
                   </button>
-                  <span
-                    class="w-8 text-center font-medium text-pb-text tabular-nums"
-                    >{{ getComboQuantity(fixedCombos[1].id) }}</span
-                  >
-                  <button
-                    @click="increaseComboQuantity(fixedCombos[1].id)"
+                  <span class="w-8 text-center font-medium text-pb-text tabular-nums">{{
+                    getComboQuantity(fixedCombos[1].id)
+                  }}</span>
+                  <button @click="increaseComboQuantity(fixedCombos[1].id)"
                     class="p-1.5 rounded-full bg-pb-accent text-pb-background hover:bg-pb-accent/90 transition-colors"
-                    aria-label="Tăng số lượng"
-                  >
+                    aria-label="Tăng số lượng">
                     <Icon icon="heroicons:plus-solid" class="h-5 w-5" />
                   </button>
                 </div>
@@ -257,21 +184,15 @@
             </div>
           </div>
 
-          <div
-            class="px-6 py-4 mt-auto border-t border-pb-border bg-pb-surface"
-          >
+          <div class="px-6 py-4 mt-auto border-t border-pb-border bg-pb-surface">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-sm font-medium text-pb-text-secondary"
-                >Tiền ghế:</span
-              >
+              <span class="text-sm font-medium text-pb-text-secondary">Tiền ghế:</span>
               <span class="text-sm font-semibold text-pb-text">{{
                 formatCurrency(totalPriceSeats)
               }}</span>
             </div>
             <div class="flex justify-between items-center mb-3">
-              <span class="text-sm font-medium text-pb-text-secondary"
-                >Tiền combo:</span
-              >
+              <span class="text-sm font-medium text-pb-text-secondary">Tiền combo:</span>
               <span class="text-sm font-semibold text-pb-text">{{
                 formatCurrency(totalPriceCombos)
               }}</span>
@@ -282,22 +203,16 @@
                 formatCurrency(finalTotalPrice)
               }}</span>
             </div>
-            <button
-              type="button"
-              @click="proceedToPayment"
-              class="w-full px-6 py-3 bg-pb-accent text-pb-background text-base font-semibold rounded-lg shadow-md hover:bg-pb-accent/90 focus:outline-none focus:ring-2 focus:ring-pb-accent focus:ring-offset-2 dark:focus:ring-offset-pb-surface"
-            >
+            <button type="button" @click="proceedToPayment"
+              class="w-full px-6 py-3 bg-pb-accent text-pb-background text-base font-semibold rounded-lg shadow-md hover:bg-pb-accent/90 focus:outline-none focus:ring-2 focus:ring-pb-accent focus:ring-offset-2 dark:focus:ring-offset-pb-surface">
               Tiếp tục thanh toán
             </button>
           </div>
         </DialogContent>
       </DialogPortal>
     </DialogRoot>
-    <PaymentMethodModal
-      v-model:open="isPaymentModalOpen"
-      :summary="{ totalPriceSeats, totalPriceCombos, finalTotalPrice }"
-      @confirm="handleFinalCheckout"
-    />
+    <PaymentMethodModal v-model:open="isPaymentModalOpen"
+      :summary="{ totalPriceSeats, totalPriceCombos, finalTotalPrice }" @confirm="handleFinalCheckout" />
   </div>
 </template>
 
@@ -317,6 +232,8 @@ interface Props {
   movieName: string;
   showTimeDetails: string;
   cinemaName: string;
+  cinemaId: string;
+  movieId: string;
   roomName: string;
 }
 interface Combo {
@@ -528,13 +445,13 @@ function getSeatClasses(seatData?: Seat): object {
     "text-white":
       seatData && seatData.seatType !== "-1" && seatData.status !== "1",
     "text-gray-300 dark:text-gray-500": seatData && seatData.status === "1",
-    "border-dashed !bg-transparent border !border-gray-400 dark:!border-gray-600 !cursor-default !text-transparent":
-      seatData && seatData.seatType === "-1",
+    "border-dashed !bg-transparent border !border-gray-100 !cursor-default !text-transparent":
+      seatData && seatData.seatType === "0",
   };
 }
 
 function isSeatDisabled(seatData?: Seat): boolean {
-  if (!seatData || seatData.seatType === "-1" || seatData.status === "1") {
+  if (!seatData || seatData.seatType === "0" || seatData.status === "1") {
     return true;
   }
   return false;
@@ -713,6 +630,8 @@ function handleFinalCheckout(
           totalPrice: (comboInfo?.price || 0) * quantity,
         };
       }),
+    cinemaId: props.cinemaId,
+    movieId: props.movieId,
     totalPriceSeats: totalPriceSeats.value,
     totalPriceCombos: totalPriceCombos.value,
     finalTotalPrice: finalTotalPrice.value,
@@ -755,8 +674,7 @@ function darkenColor(hex: string, percent: number): string {
 </script>
 
 <style scoped>
-.cinema-seat-layout {
-}
+.cinema-seat-layout {}
 
 .screen-indicator {
   background-color: #4a5568;
@@ -822,11 +740,9 @@ function darkenColor(hex: string, percent: number): string {
   background-color: #9ca3af;
 }
 
-.seat-item:focus-visible {
-}
+.seat-item:focus-visible {}
 
-.dark .seat-item:focus-visible {
-}
+.dark .seat-item:focus-visible {}
 
 .selected-seats-info p {
   margin-bottom: 0.25rem;

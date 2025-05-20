@@ -64,9 +64,9 @@
 
             <div v-if="selectedShowTime" class="p-4 md:p-6  ">
               <BookingModal :room-id="selectedShowTime.roomId" :show-time-id="selectedShowTime.id"
-                :movie-name="showtime.movie.name" :show-time-details="selectedShowTime.showTimeDuration"
-                :cinema-name="showtime.cinema.name" :room-name="getRoomName(selectedShowTime.roomId)"
-                @checkout="handleCheckout" />
+                :movie-id="showtime.movie.id" :cinema-id="showtime.cinema.id" :movie-name="showtime.movie.name"
+                :show-time-details="selectedShowTime.showTimeDuration" :cinema-name="showtime.cinema.name"
+                :room-name="getRoomName(selectedShowTime.roomId)" @checkout="handleCheckout" />
             </div>
             <div v-else class="p-4 text-center flex-grow flex items-center justify-center">
               <p class="text-gray-500 dark:text-gray-400">Đang tải dữ liệu suất chiếu...</p>
@@ -114,8 +114,7 @@ const formatShowTime = (duration: string) => {
 
 
 const getRoomName = (roomId: string): string => {
-  const room = props.showtime.cinema.rooms?.find((r: Room) => r.id === roomId);
-  return room ? room.name : 'Phòng chiếu';
+  return 'Phòng chiếu' + roomId;
 };
 
 const handleCheckout = async (orderDetails: BookingPayload) => {
