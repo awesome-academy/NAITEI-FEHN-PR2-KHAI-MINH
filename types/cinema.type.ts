@@ -1,4 +1,6 @@
-﻿export interface Cinema {
+﻿import type { Room } from "./room.type";
+
+export interface Cinema {
   id: string;
   name: string;
   address: string;
@@ -8,4 +10,5 @@
   lon: number;
   createdAt: string;
   updatedAt: string;
+  rooms?: Room[];
 }
