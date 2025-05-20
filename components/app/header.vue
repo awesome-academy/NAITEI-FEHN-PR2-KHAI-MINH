@@ -8,7 +8,7 @@
     ref="appHeader"
   >
     <nav
-      class="w-full mx-auto px-10 sm:px-8 lg:px-10 py-5 flex items-center justify-between"
+      class="w-full mx-auto px-10 sm:px-8 lg:px-10 py-3 flex items-center justify-between"
     >
       <div class="flex items-center">
         <div class="flex items-center">
@@ -86,7 +86,7 @@
                 class="absolute top-0 left-0 w-auto data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight"
               >
                 <ul
-                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px]  rounded-md border border-gray-200 border-slate-700"
+                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px] rounded-md border border-gray-200 border-slate-700"
                 >
                   <li class="row-span-4 grid">
                     <NavigationMenuLink as-child>
@@ -288,7 +288,7 @@
           </div>
         </div>
         <button
-          @click="openLoginModal"
+          @click="currentUser ? handleUserProfile() : openLoginModal()"
           class="ml-2 sm:ml-0 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
           :class="
             isScrolled
@@ -348,11 +348,6 @@ const navigationItems = ref<NavItem[]>([
   {
     name: "Rạp chiếu",
     href: "/rap-chieu",
-    children: [
-      { name: "Rạp CGV", href: "/rap-chieu/cgv" },
-      { name: "Rạp Lotte", href: "/rap-chieu/lotte" },
-      { name: "Rạp BHD", href: "/rap-chieu/bhd" },
-    ],
   },
   { name: "Phim chiếu", href: "/phim-chieu" },
   { name: "Review phim", href: "/review-phim" },
@@ -360,11 +355,6 @@ const navigationItems = ref<NavItem[]>([
   {
     name: "Blog phim",
     href: "/blog-phim",
-    children: [
-      { name: "Tin tức điện ảnh", href: "/blog-phim/tin-tuc" },
-      { name: "Phim chiếu rạp", href: "/blog-phim/goc-nhin" },
-      { name: "Tổng hợp phim", href: "/blog-phim/phim-truyen-hinh" },
-    ],
   },
 ]);
 const currentUser = useCurrentUser();
@@ -491,6 +481,10 @@ const handleSearchInput = () => {
   searchTimeout = setTimeout(() => {
     performSearch();
   }, 2000);
+};
+
+const handleUserProfile = () => {
+  router.push("/user/profile");
 };
 
 const clearSearch = () => {
