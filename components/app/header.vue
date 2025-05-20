@@ -8,7 +8,7 @@
     ref="appHeader"
   >
     <nav
-      class="w-full mx-auto px-10 sm:px-8 lg:px-10 py-5 flex items-center justify-between"
+      class="w-full mx-auto px-10 sm:px-8 lg:px-10 py-3 flex items-center justify-between"
     >
       <div class="flex items-center">
         <div class="flex items-center">
@@ -288,7 +288,7 @@
           </div>
         </div>
         <button
-          @click="openLoginModal"
+          @click="currentUser ? handleUserProfile() : openLoginModal()"
           class="ml-2 sm:ml-0 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors duration-300 flex items-center"
           :class="
             isScrolled
@@ -491,6 +491,10 @@ const handleSearchInput = () => {
   searchTimeout = setTimeout(() => {
     performSearch();
   }, 2000);
+};
+
+const handleUserProfile = () => {
+  router.push("/user/profile");
 };
 
 const clearSearch = () => {
