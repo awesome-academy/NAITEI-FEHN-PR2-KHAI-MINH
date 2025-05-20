@@ -86,7 +86,7 @@
                 class="absolute top-0 left-0 w-auto data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight"
               >
                 <ul
-                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px]  rounded-md border border-gray-200 border-slate-700"
+                  class="m-0 list-none gap-x-[10px] sm:grid sm:grid-cols-2 p-[12px] sm:w-[600px] rounded-md border border-gray-200 border-slate-700"
                 >
                   <li class="row-span-4 grid">
                     <NavigationMenuLink as-child>
@@ -348,11 +348,6 @@ const navigationItems = ref<NavItem[]>([
   {
     name: "Rạp chiếu",
     href: "/rap-chieu",
-    children: [
-      { name: "Rạp CGV", href: "/rap-chieu/cgv" },
-      { name: "Rạp Lotte", href: "/rap-chieu/lotte" },
-      { name: "Rạp BHD", href: "/rap-chieu/bhd" },
-    ],
   },
   { name: "Phim chiếu", href: "/phim-chieu" },
   { name: "Review phim", href: "/review-phim" },
@@ -360,11 +355,6 @@ const navigationItems = ref<NavItem[]>([
   {
     name: "Blog phim",
     href: "/blog-phim",
-    children: [
-      { name: "Tin tức điện ảnh", href: "/blog-phim/tin-tuc" },
-      { name: "Phim chiếu rạp", href: "/blog-phim/goc-nhin" },
-      { name: "Tổng hợp phim", href: "/blog-phim/phim-truyen-hinh" },
-    ],
   },
 ]);
 const currentUser = useCurrentUser();

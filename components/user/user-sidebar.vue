@@ -1,12 +1,16 @@
 ﻿<template>
   <aside
-    class="w-[22rem] bg-[#27293D] text-gray-300 p-6 flex flex-col shadow-lg rounded-2xl h-full"
+    class="w-[25rem] bg-[#27293D] text-gray-300 p-6 pr-20 flex flex-col shadow-lg rounded-2xl h-full"
   >
     <h2 class="text-xl font-semibold mb-8 text-white">Quản lý tài khoản</h2>
 
     <nav class="flex-grow space-y-1.5">
       <SidebarLink to="/user/favorites" icon="mdi:heart" label="Yêu thích" />
-      <SidebarLink to="/user/lists" icon="mdi:plus" label="Ticket" />
+      <SidebarLink
+        to="/user/ticket"
+        icon="mdi:ticket-confirmation-outline"
+        label="Ticket"
+      />
       <SidebarLink
         to="/user/continue-watching"
         icon="mdi:refresh"
