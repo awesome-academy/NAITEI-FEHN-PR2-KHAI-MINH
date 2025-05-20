@@ -1,6 +1,7 @@
 ﻿<template>
   <UCard
     class="cursor-pointer transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl hover:z-10"
+    @click="onCick(movie.id)"
   >
     <div class="relative w-full h-80">
       <img
@@ -26,6 +27,7 @@
 import type { Movie } from "@/types/movie.type";
 interface Props {
   movie: Movie;
+  onCick: (movieId: string) => void;
 }
 
 const props = defineProps<Props>();
