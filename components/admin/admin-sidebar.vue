@@ -1,6 +1,6 @@
 ﻿<template>
   <aside
-    class="w-[22rem] bg-[#27293D] text-gray-300 py-12 px-6 flex flex-col h-full"
+    class="w-24 min-w-[260px] max-w-xs bg-[#27293D] text-gray-300 py-12 px-6 flex flex-col h-full"
   >
     <h2 class="text-xl font-semibold mb-8 text-white">
       Quản lý Rạp Chiếu Phim
