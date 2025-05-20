@@ -37,3 +37,32 @@ export const movieSchema = yup.object({
     .required("Trạng thái phim không được để trống"),
   description: yup.string().nullable(),
 });
+
+export const cinemaSchema = yup.object({
+  name: yup
+    .string()
+    .required("Tên rạp không được để trống")
+    .max(150, "Tên rạp quá dài (tối đa 150 ký tự)"),
+  address: yup
+    .string()
+    .required("Địa chỉ không được để trống")
+    .max(255, "Địa chỉ quá dài (tối đa 255 ký tự)"),
+  city: yup
+    .string()
+    .required("Thành phố không được để trống")
+    .max(100, "Tên thành phố quá dài (tối đa 100 ký tự)"),
+  lat: yup
+    .number()
+    .typeError("Vĩ độ phải là một số")
+    .required("Vĩ độ không được để trống")
+    .min(-90, "Vĩ độ phải nằm trong khoảng -90 đến 90")
+    .max(90, "Vĩ độ phải nằm trong khoảng -90 đến 90")
+    .label("Vĩ độ"),
+  lon: yup
+    .number()
+    .typeError("Kinh độ phải là một số")
+    .required("Kinh độ không được để trống")
+    .min(-180, "Kinh độ phải nằm trong khoảng -180 đến 180")
+    .max(180, "Kinh độ phải nằm trong khoảng -180 đến 180")
+    .label("Kinh độ"),
+});

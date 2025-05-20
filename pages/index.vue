@@ -14,6 +14,9 @@
       <MovieList2 :movies="movies" />
     </div>
     <showTimesMain />
+    <div class="w-full px-12 mb-12">
+      <SectionComment />
+    </div>
   </main>
 </template>
 
@@ -25,6 +28,7 @@ import MovieList2 from "@/components/movie/movie-list-2.vue";
 import type { Movie } from "@/types/movie.type.ts";
 import axios from "axios";
 import showTimesMain from "@/components/showtimes/show-times-main.vue";
+import SectionComment from "@/components/review/section.vue";
 
 const props = defineProps({
   headerHeight: {
