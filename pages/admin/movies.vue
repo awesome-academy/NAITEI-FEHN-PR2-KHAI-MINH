@@ -1,6 +1,6 @@
 ﻿<template>
   <div
-    class="flex flex-1 p-4 md:p-8 lg:p-12 flex-col min-h-screen overflow-hidden"
+    class="flex flex-1 bg-gray-900 p-4 md:p-8 lg:p-12 flex-col min-h-screen overflow-hidden"
   >
     <span class="text-2xl font-medium mb-4 text-white">Danh sách phim</span>
     <div>
@@ -75,7 +75,7 @@
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+            class="px-4 py-2 hover:bg-green-500 hover:text-white text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
           >
             Trước
           </button>
@@ -85,7 +85,7 @@
           <button
             @click="nextPage"
             :disabled="currentPage === totalPages || totalPages === 0"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
+            class="px-4 py-2 hover:bg-green-500 hover:text-white text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150"
           >
             Tiếp theo
           </button>
